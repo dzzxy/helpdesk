@@ -8,7 +8,7 @@
 
 | 工具 | 用途 | 版本 | 下载 |
 | --- | --- | --- | --- |
-| [SoftwareDeploymentTool](tools/software-deployment-tool/README.md) | 企业终端软件部署与运维：软件安装、文件分发、资产采集、卸载、任务中心 | 0.1.15 | [ZIP（win-x64）](https://github.com/dzzxy/helpdesk/releases/tag/software-deployment-tool-v0.1.15) |
+| [SoftwareDeploymentTool](tools/software-deployment-tool/README.md) | 企业终端软件部署与运维：软件安装、文件分发、资产采集、卸载、任务中心 | 0.1.15 | [EXE（win-x64）](https://github.com/dzzxy/helpdesk/releases/download/software-deployment-tool-v0.1.15/CorpInstaller.Rust-0.1.15.exe) |
 
 ## 目录结构
 
