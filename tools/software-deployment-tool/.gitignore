@@ -1,0 +1,9 @@
+/target/
+/dist/
+/payloads/
+/tools/
+/review/
+*.log
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm

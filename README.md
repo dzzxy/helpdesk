@@ -8,7 +8,7 @@
 
 | 工具 | 用途 | 版本 | 下载 |
 | --- | --- | --- | --- |
-| _待添加_ | | | |
+| [SoftwareDeploymentTool](tools/software-deployment-tool/README.md) | 企业终端软件部署与运维：安装任务、文件夹分发、信息收集、卸载、日志维护、连接诊断、授权启动、任务中心 | 0.1.15 | [EXE（win-x64）](https://github.com/dzzxy/helpdesk/releases/download/software-deployment-tool-v0.1.15/CorpInstaller.Rust-0.1.15.exe) |
 
 ## 目录结构
 
@@ -31,7 +31,7 @@ helpdesk/
 ## Releases 约定
 
 - tag 格式：`<工具名>-v<版本号>`，版本号用语义化版本（如 `netfix-v1.0.0`）
-- 附件：可执行文件 / 压缩包 + 必要的使用说明
+- 附件：只放编译好的可执行文件（优先单文件 EXE）+ 校验文件（如 `SHA256SUMS.txt`）；源码留在仓库对应目录，不随发布件分发
 - 说明正文：版本变更、适用系统（如 Windows 10/11 x64）、已知问题
 
 ## 说明
