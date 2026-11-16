@@ -1,0 +1,41 @@
+# 构建产物（统一走 Releases，不入库）
+dist/
+build/
+out/
+*.exe
+*.msi
+*.zip
+*.7z
+*.rar
+*.tar.gz
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node / 前端
+node_modules/
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*
+
+# 编辑器与系统
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 日志与临时文件
+*.log
+*.tmp
+*.bak
+~$*
