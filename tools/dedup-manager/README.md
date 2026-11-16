@@ -5,16 +5,27 @@
 > 这不是「查找或删除重复文件」的工具，而是管理 Windows 数据去重（Dedup）功能的运维工具。
 
 - 当前版本：**2.5.0**
-- 下载：[DedupManager-v2.5.0.zip](https://github.com/dzzxy/helpdesk/releases/download/dedup-manager-v2.5.0/DedupManager-v2.5.0.zip)（[Release 页](https://github.com/dzzxy/helpdesk/releases/tag/dedup-manager-v2.5.0)）
+- 下载：[manage-dedup.ps1](https://github.com/dzzxy/helpdesk/releases/download/dedup-manager-v2.5.0/manage-dedup.ps1)（[Release 页](https://github.com/dzzxy/helpdesk/releases/tag/dedup-manager-v2.5.0)）
 - 适用系统：Windows 10 / 11 x64；内置 AMD64 安装组件，脚本按系统选择，能否安装取决于目标系统与组件适用性（未验证所有 Windows 构建）
-- 形态：PowerShell 脚本 + 双击启动入口，免编译；**源码即本目录文件**，仓库内容与发布 ZIP 一致
+- 形态：单文件 PowerShell 脚本，免编译；**源码即本目录中的 `manage-dedup.ps1`**，Release 附件就是同一份脚本
 
 ## 快速开始
 
-1. 从 [Release](https://github.com/dzzxy/helpdesk/releases/tag/dedup-manager-v2.5.0) 下载 `DedupManager-v2.5.0.zip` 并完整解压（也可以直接使用本目录中的文件）；
-2. 双击 `Start-DedupManager.cmd` 并接受管理员权限提示；
-3. 选择 **5：查看 Dedup 状态、任务和计划**；
-4. 如果组件尚未安装，选择 **1：安装内置 Dedup 组件**；按提示重启后再启用数据盘去重。
+1. 从 [Release](https://github.com/dzzxy/helpdesk/releases/tag/dedup-manager-v2.5.0) 下载 `manage-dedup.ps1`（也可以直接使用本目录中的文件）；
+2. 浏览器下载的脚本先解除锁定（在脚本所在目录运行）：
+
+   ```powershell
+   Unblock-File .\manage-dedup.ps1
+   ```
+
+3. 以管理员身份打开 PowerShell，在脚本所在目录运行：
+
+   ```powershell
+   powershell -NoProfile -ExecutionPolicy Bypass -File .\manage-dedup.ps1
+   ```
+
+4. 选择 **5：查看 Dedup 状态、任务和计划**；
+5. 如果组件尚未安装，选择 **1：安装内置 Dedup 组件**；按提示重启后再启用数据盘去重。
 
 ## 功能
 
@@ -32,8 +43,7 @@
 
 ## 文件说明
 
-- `manage-dedup.ps1`：可直接查看、修改和运行的 PowerShell 源码；内置的 Dedup 安装组件以 Base64 形式内嵌在脚本中，所以单文件约 24MB。
-- `Start-DedupManager.cmd`：双击启动入口，无需编译；`-ExecutionPolicy Bypass` 参数只作用于该启动进程。
+- `manage-dedup.ps1`：可直接查看、修改和运行的 PowerShell 源码；内置的 Dedup 安装组件以 Base64 形式内嵌在脚本中，所以单文件约 24MB。脚本需要管理员权限，请用 `-ExecutionPolicy Bypass` 启动（只作用于该进程），或右键「使用 PowerShell 运行」后按提示操作。
 - `.gitignore`：忽略运行日志、`.bak-*`、`.cab` 与临时 `dedup.zip`。
 
 ## 自检
