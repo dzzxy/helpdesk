@@ -1,0 +1,4 @@
+*.log
+*.bak-*
+*.cab
+dedup.zip
