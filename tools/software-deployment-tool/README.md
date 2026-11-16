@@ -3,9 +3,9 @@
 面向 Windows 终端的企业软件部署与运维工具。以 CorpInstaller C# v80 为基准，用 Rust 重写管理端与后台组件，让 IT 管理员在一个窗口内完成软件安装、文件分发、资产采集和任务结果查看。
 
 - 当前版本：**0.1.15**（Windows x64 单文件版）
-- 下载：[CorpInstaller.Rust-0.1.15.exe](https://github.com/dzzxy/helpdesk/releases/download/software-deployment-tool-v0.1.15/CorpInstaller.Rust-0.1.15.exe)（[Release 页](https://github.com/dzzxy/helpdesk/releases/tag/software-deployment-tool-v0.1.15)）
+- 下载：[Release software-deployment-tool-v0.1.15](https://github.com/dzzxy/helpdesk/releases/tag/software-deployment-tool-v0.1.15)
 - 适用系统：Windows 10 / 11 x64；运行远程任务需要相应的 Windows 管理权限
-- 发布形态：单文件 EXE 直接作为 Release 附件，BCUninstaller 引擎、C# 桥接组件与许可说明均已内嵌；源码在本目录，不随发布包分发
+- 发布形态：单个 `CorpInstaller.Rust-0.1.15.exe`，BCUninstaller 引擎、C# 桥接组件与许可说明均已内嵌
 
 ## 主要功能
 
@@ -19,15 +19,11 @@
 
 ## 运行
 
-1. 从 [Release](https://github.com/dzzxy/helpdesk/releases/tag/software-deployment-tool-v0.1.15) 下载 `CorpInstaller.Rust-0.1.15.exe`（单文件，无需解压）；
-2. 双击运行；
+1. 从 [Releases](https://github.com/dzzxy/helpdesk/releases) 下载 `SoftwareDeploymentTool-Rust-0.1.15-win-x64.zip` 并解压；
+2. 双击 `CorpInstaller.Rust-0.1.15.exe`；
 3. 远程操作前确认目标机的 Windows 管理权限与管理通道可用（连接修复的 SSH 分支使用系统 OpenSSH 客户端）。
 
-Release 附件中的 `SHA256SUMS.txt` 给出 EXE 的 SHA-256，可用于下载后校验：
-
-```powershell
-Get-FileHash .\CorpInstaller.Rust-0.1.15.exe -Algorithm SHA256
-```
+发布包内 `SHA256SUMS.txt` 给出 EXE 的 SHA-256，可用于下载后校验。
 
 ## 本目录结构
 
