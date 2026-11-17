@@ -5,14 +5,14 @@
 > 这不是「查找或删除重复文件」的工具，而是管理 Windows 数据去重（Dedup）功能的运维工具。
 
 - 当前版本：**2.5.0**
-- 下载：[manage-dedup.ps1](https://github.com/dzzxy/helpdesk/releases/download/dedup-manager-v2.5.0/manage-dedup.ps1)（[Release 页](https://github.com/dzzxy/helpdesk/releases/tag/dedup-manager-v2.5.0)）
+- 下载：[DedupManager-v2.5.0.zip](https://github.com/dzzxy/helpdesk/releases/download/dedup-manager-v2.5.0/DedupManager-v2.5.0.zip)（[Release 页](https://github.com/dzzxy/helpdesk/releases/tag/dedup-manager-v2.5.0)）
 - 适用系统：Windows 10 / 11 x64；内置 AMD64 安装组件，脚本按系统选择，能否安装取决于目标系统与组件适用性（未验证所有 Windows 构建）
-- 形态：单文件 PowerShell 脚本，免编译；**源码即本目录中的 `manage-dedup.ps1`**，Release 附件就是同一份脚本
+- 形态：单文件 PowerShell 脚本，免编译；**源码即本目录中的 `manage-dedup.ps1`**，Release 的 ZIP 内包含同一份脚本
 
 ## 快速开始
 
-1. 从 [Release](https://github.com/dzzxy/helpdesk/releases/tag/dedup-manager-v2.5.0) 下载 `manage-dedup.ps1`（也可以直接使用本目录中的文件）；
-2. 浏览器下载的脚本先解除锁定（在脚本所在目录运行）：
+1. 从 [Release](https://github.com/dzzxy/helpdesk/releases/tag/dedup-manager-v2.5.0) 下载 `DedupManager-v2.5.0.zip` 并全部解压（也可以直接使用本目录中的脚本）；
+2. 如果解压后的脚本仍带有 Internet 下载标记，在解压目录运行以下命令解除锁定：
 
    ```powershell
    Unblock-File .\manage-dedup.ps1
