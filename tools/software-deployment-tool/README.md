@@ -2,9 +2,9 @@
 
 面向企业 IT 管理员的 Windows x64 桌面工具：在同一个界面里完成软件安装、文件分发、资产采集、软件卸载、日志维护、连接诊断与授权启动。管理端与主要后台组件使用 Rust，日常远程任务使用临时执行组件，授权启动功能按需在目标电脑配置授权后台。
 
-- 当前版本：**0.1.15**
-- 运行文件：[CorpInstaller.Rust-0.1.15.exe](https://github.com/dzzxy/helpdesk/releases/download/software-deployment-tool-v0.1.15/CorpInstaller.Rust-0.1.15.exe)（单文件，下载即用）· [Release 页](https://github.com/dzzxy/helpdesk/releases/tag/software-deployment-tool-v0.1.15)
-- SHA-256：`C3D585058B73264993E8CB619FE5587FDBC29E3195DB7B94F00B300E6CD76B53`
+- 当前版本：**0.1.16**
+- 运行文件：[CorpInstaller.Rust-0.1.16.exe](https://github.com/dzzxy/helpdesk/releases/download/software-deployment-tool-v0.1.16/CorpInstaller.Rust-0.1.16.exe)（单文件，下载即用）· [Release 页](https://github.com/dzzxy/helpdesk/releases/tag/software-deployment-tool-v0.1.16)
+- SHA-256：`8FE067E0C7631BB20658F1058195225B3949E1BA56D160AA4A27D3B1AAA04B32`
 - 适用系统：Windows 10 / 11 x64；远程操作需要目标电脑的 Windows 管理权限与可用管理通道
 - 发布形态：Release 只放编译好的 EXE 与 `SHA256SUMS.txt`；**源码即本目录**，不随发布件分发
 
@@ -25,11 +25,11 @@
 
 ## 下载与使用
 
-1. 从 [Release](https://github.com/dzzxy/helpdesk/releases/tag/software-deployment-tool-v0.1.15) 下载 `CorpInstaller.Rust-0.1.15.exe`，单文件即用；BCUninstaller 引擎、桥接组件与第三方许可说明已内嵌，无需附带组件文件夹。
+1. 从 [Release](https://github.com/dzzxy/helpdesk/releases/tag/software-deployment-tool-v0.1.16) 下载 `CorpInstaller.Rust-0.1.16.exe`，单文件即用；BCUninstaller 引擎、桥接组件与第三方许可说明已内嵌，无需附带组件文件夹。
 2. 核对下载完整性（与 Release 附件的 `SHA256SUMS.txt` 比对）：
 
    ```powershell
-   Get-FileHash .\CorpInstaller.Rust-0.1.15.exe -Algorithm SHA256
+   Get-FileHash .\CorpInstaller.Rust-0.1.16.exe -Algorithm SHA256
    ```
 
 3. 输入目标电脑的 IP 或计算机名。远程操作需要对应的 Windows 权限和可用的管理通道；目标列表和管理员账号可在模块间复用，凭据可选择保存到 Windows 凭据管理器。
@@ -57,16 +57,16 @@ software-deployment-tool/
 准备 Windows x64、Rust stable MSVC 工具链、Visual Studio Build Tools 与 Windows SDK。在源码目录用 PowerShell 运行：
 
 ```powershell
-.\Build.ps1 -Test -BundleFrom ..\CorpInstaller.Rust-0.1.15.exe
+.\Build.ps1 -Test -BundleFrom ..\CorpInstaller.Rust-0.1.16.exe
 ```
 
-脚本从随附的 EXE 读取卸载组件并校验 SHA-256，再生成 `dist\CorpInstaller.Rust-0.1.15.exe`。也可以通过 `-PayloadDirectory` 指定已有的 `BCUninstaller.zip` 和 `CorpInstaller.BcuBridge.exe`，组件版本和哈希须与打包脚本一致。
+脚本从已发布的 EXE 读取卸载组件并校验 SHA-256，再生成 `dist\CorpInstaller.Rust-0.1.16.exe`。也可以通过 `-PayloadDirectory` 指定已有的 `BCUninstaller.zip` 和 `CorpInstaller.BcuBridge.exe`，组件版本和哈希须与打包脚本一致。
 
 ## 本机自检
 
 ```powershell
 # 在 EXE 所在目录运行
-Start-Process -FilePath .\CorpInstaller.Rust-0.1.15.exe -ArgumentList '--self-test', 'report.json' -Wait
+Start-Process -FilePath .\CorpInstaller.Rust-0.1.16.exe -ArgumentList '--self-test', 'report.json' -Wait
 ```
 
 检查 `report.json` 中的 `passed` 与 `embeddedBcu` 是否均为 `true`。
@@ -79,6 +79,11 @@ Start-Process -FilePath .\CorpInstaller.Rust-0.1.15.exe -ArgumentList '--self-te
 详见 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。
 
 ## 版本记录
+
+### 0.1.16
+
+- 软件卸载扫描收到结果后立即更新软件列表，后台继续清理临时任务。
+- 可在界面查看随单文件 EXE 附带的 BCUninstaller 组件许可。
 
 ### 0.1.15
 

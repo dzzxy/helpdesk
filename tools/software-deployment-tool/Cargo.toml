@@ -1,6 +1,6 @@
 [package]
 name = "software-deployment-rust"
-version = "0.1.15"
+version = "0.1.16"
 edition = "2024"
 description = "Windows software deployment and endpoint administration tool"
 

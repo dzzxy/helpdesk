@@ -218,6 +218,11 @@ pub fn execute_with_source(computer:&str,credentials:&Credentials,source_credent
                 }
             }
             if let Ok(data) = &result {
+                if request.operation == "bcu-scan" && data["applications"].is_array() {
+                    if let Some(progress) = progress {
+                        progress(json!({"scanReceipt": data}));
+                    }
+                }
                 let state = match data["state"].as_str() {
                     Some("Succeeded") => "安装成功",
                     Some("RebootRequired") => "安装成功，需重启",

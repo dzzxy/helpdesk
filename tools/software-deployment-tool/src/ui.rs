@@ -16,7 +16,7 @@ const WM_DONE:u32=WM_APP+2;
 const NAV:i32=301;
 const NAV_MAINTENANCE:i32=302;
 const CLEAR_TARGETS:i32=751;
-const WINDOW_TITLE:&str=if cfg!(debug_assertions){"企业软件部署 · Rust 0.1.15 调试核对（开发中）"}else{"企业软件部署 · Rust 0.1.15 复刻核对版（开发中）"};
+const WINDOW_TITLE:&str=if cfg!(debug_assertions){"企业软件部署 · Rust 0.1.16 调试核对（开发中）"}else{"企业软件部署 · Rust 0.1.16 复刻核对版（开发中）"};
 const RUN:i32=201;
 const CANCEL:i32=202;
 const SESSIONS:i32=203;
@@ -128,7 +128,7 @@ impl Ui {
     fn build(&mut self) {
         unsafe {
             self.add(501,"STATIC","操作台",SS_LEFT,16,24,170,28,-1);
-            self.add(502,"STATIC","Rust 核对版 0.1.15",SS_LEFT,24,59,180,24,-1);
+            self.add(502,"STATIC","Rust 核对版 0.1.16",SS_LEFT,24,59,180,24,-1);
             self.add(526,"STATIC","部署",SS_LEFT,16,72,170,22,-1);
             self.add(TASK_CENTER,"BUTTON","任务中心",WS_TABSTOP,10,590,184,42,-1);
             self.add(527,"STATIC","● 管理端就绪\r\n免常驻 Agent\r\n临时服务 · SYSTEM 权限",SS_LEFT,12,650,182,72,-1);
@@ -856,6 +856,14 @@ impl Ui {
                     }else{None};
                     crate::tasks::update(&request.id, "Running", "正在执行", None)?;
                     let progress=|data:serde_json::Value|{
+                        if operation == "bcu-scan" && let Some(receipt) = data.get("scanReceipt") {
+                            let sessions = receipt["sessions"].as_array().map(Vec::as_slice).unwrap_or_default();
+                            post_on(hwnd, WM_RESULT, page, serde_json::json!({
+                                "id": request.id, "computer": computer, "operation": operation, "data": receipt
+                            }).to_string());
+                            post_on(hwnd, WM_SESSIONS, page, serde_json::json!([computer, sessions, null]).to_string());
+                            return;
+                        }
                         if let Some(session) = data.get("interactiveSession") {
                             post_on(hwnd, WM_SESSIONS, page, serde_json::json!([computer, [session], session["sessionId"]]).to_string());
                             return;
@@ -871,12 +879,16 @@ impl Ui {
                     Err(error) => crate::tasks::update(&request.id, if cancel.load(Ordering::Relaxed)||cancellation.as_ref().is_ok_and(|task|task.flag.load(Ordering::Relaxed)) {"Cancelled"} else {"Failed"},error,None),
                 };
                 if let Err(error) = persisted { report(format!("任务状态保存失败：{error}")); }
-                let table_record=match &outcome{
-                    Ok(data)=>serde_json::json!({"id":request.id,"computer":computer,"state":model::outcome_label(data),"operation":operation,
-                        "detail":format!("{} · {:.1} 秒",model::outcome_detail(data),start.elapsed().as_secs_f64()),"data":data}),
-                    Err(error)=>serde_json::json!({"id":request.id,"computer":computer,"state":"失败 / 未完成","operation":operation,"detail":error})
-                };
-                post_on(hwnd,WM_RESULT,page,table_record.to_string());
+                let scan_receipt_posted = operation == "bcu-scan"
+                    && outcome.as_ref().is_ok_and(|data| data["applications"].is_array());
+                if !scan_receipt_posted {
+                    let table_record=match &outcome{
+                        Ok(data)=>serde_json::json!({"id":request.id,"computer":computer,"state":model::outcome_label(data),"operation":operation,
+                            "detail":format!("{} · {:.1} 秒",model::outcome_detail(data),start.elapsed().as_secs_f64()),"data":data}),
+                        Err(error)=>serde_json::json!({"id":request.id,"computer":computer,"state":"失败 / 未完成","operation":operation,"detail":error})
+                    };
+                    post_on(hwnd,WM_RESULT,page,table_record.to_string());
+                }
                 let (state, label, detail) = match &outcome {
                     Ok(data) => {
                         let detail = model::outcome_detail(data);
@@ -909,11 +921,6 @@ impl Ui {
                         }
                         if operation == "bcu-scan" {
                             let sessions = &data["sessions"];
-                            if sessions.is_array() {
-                                post_on(hwnd, WM_SESSIONS, page, serde_json::json!([computer, sessions, null]).to_string());
-                            } else {
-                                post_on(hwnd, WM_SESSIONS, page, serde_json::json!([computer, [], null]).to_string());
-                            }
                             if let Some(error) = data["sessionWarning"].as_str() {
                                 report(format!("{computer}：软件扫描完成，但登录会话读取失败。{error}"));
                             } else if !sessions.as_array().is_some_and(|rows| rows.iter().any(|row| row["state"] == "Active" && row["sessionId"].as_u64().is_some_and(|id| id > 0))) {
@@ -1172,7 +1179,14 @@ unsafe extern "system" fn procedure(window:HWND,msg:u32,w:WPARAM,l:LPARAM)->LRES
                         CANCEL=>ui.cancel_current(),TASK_CENTER=>ui.select_page(11),FILTERS=>ui.edit_filters(),
                         RETRY_DISTRIBUTION=>ui.retry_distribution(),EXPORT_SCOPE=>ui.export_scope(),
                         EXPORT_JSON=>ui.export_inventory_as(Some(1)),EXPORT_CSV=>ui.export_inventory_as(Some(2)),EXPORT_EXCEL=>ui.export_inventory_as(Some(3)),REPAIR_NETWORK=>ui.select_page(5),
-                        BCU_LICENSE=>{let result=crate::bundle::Executable::current().and_then(|mut executable|executable.notice());match result{Ok(text)=>win::message("BCU 组件许可",&text),Err(error)=>ui.set(STATUS,&error)}},
+                        BCU_LICENSE => {
+                            match crate::bundle::Executable::current().and_then(|mut executable| executable.notice()) {
+                                Ok(text) => {
+                                    MessageBoxW(ui.window, wide(&text).as_ptr(), wide("BCU 组件许可").as_ptr(), MB_OK | MB_ICONINFORMATION);
+                                }
+                                Err(error) => ui.set(STATUS, &error),
+                            }
+                        },
                         CLEAR_DIAGNOSTICS=>{if !ui.busy{ui.records[5].clear();ui.logs[5].clear();ui.refresh_results();ui.refresh_log();ui.set(STATUS,"已清空检测结果。");}},
                         OPEN_BUNDLE=>ui.open_bundle(false),OPEN_BUNDLE_FOLDER=>ui.open_bundle(true),
                         ELEVATION_BROWSE=>ui.browse_remote(ELEVATION_PATH,false,false),
@@ -1222,12 +1236,17 @@ unsafe extern "system" fn procedure(window:HWND,msg:u32,w:WPARAM,l:LPARAM)->LRES
                     }
                     if operation=="bcu-uninstall" { if let Some(items)=data["data"]["junkItems"].as_array(){ui.junk_host=data["computer"].as_str().unwrap_or_default().into();ui.junk_items=items.clone();ui.review_pending=!items.is_empty();} }
                     if operation=="bcu-scan" && data["data"]["applications"].is_array(){
+                        let applications = data["data"]["applications"].as_array().unwrap();
                         ui.records[w as usize].retain(|row|row["id"]!=data["id"]);
-                        for app in data["data"]["applications"].as_array().unwrap(){
+                        for app in applications {
                             ui.records[w as usize].push(serde_json::json!({
                                 "computer":data["computer"],"state":if app["protected"]==true{"受保护"}else{"已扫描"},
                                 "operation":app["displayName"],"detail":format!("{} · {}",app["version"].as_str().unwrap_or_default(),app["publisher"].as_str().unwrap_or_default()),"data":app
                             }));
+                        }
+                        ui.statuses[w as usize] = format!("已收到 {} 条软件记录，正在后台清理…", applications.len());
+                        if ui.page as usize == w as usize && !ui.closing {
+                            ui.set(STATUS, &ui.statuses[w as usize]);
                         }
                     }else if operation=="elevation-list"&&data["data"]["rules"].is_array(){
                         ui.records[w as usize].retain(|row|row["id"]!=data["id"]);
