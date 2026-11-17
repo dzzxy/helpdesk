@@ -24,7 +24,7 @@ cargo build --release --locked
 运行只读查询。
 
 ```powershell
-.\DELL-0D4MD1-WoL.exe --read
+.\DELL-WoL.exe --read
 ```
 
 接口依据 Dell Agentless Client Manageability Technical Whitepaper。

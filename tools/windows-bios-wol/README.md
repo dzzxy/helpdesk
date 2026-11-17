@@ -54,7 +54,7 @@ cargo build --manifest-path src/MsiWol/Cargo.toml --release --locked
 windows-bios-wol/
 ├── README.md        # 本说明
 ├── DISCLAIMER.md    # 使用说明与免责声明
-├── SHA256SUMS.txt   # 发布 EXE 的校验值（路径前缀 bin/ 指发布包内位置）
+├── SHA256SUMS.txt   # 三个发布 EXE 的 SHA-256 校验值
 ├── src/             # 三个独立 Rust crate
 │   ├── DellWol/
 │   ├── MsiWol/
