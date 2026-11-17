@@ -12,20 +12,9 @@
 ## 快速开始
 
 1. 从 [Release](https://github.com/dzzxy/helpdesk/releases/tag/dedup-manager-v2.5.0) 下载 `DedupManager-v2.5.0.zip` 并全部解压（也可以直接使用本目录中的脚本）；
-2. 如果解压后的脚本仍带有 Internet 下载标记，在解压目录运行以下命令解除锁定：
-
-   ```powershell
-   Unblock-File .\manage-dedup.ps1
-   ```
-
-3. 以管理员身份打开 PowerShell，在脚本所在目录运行：
-
-   ```powershell
-   powershell -NoProfile -ExecutionPolicy Bypass -File .\manage-dedup.ps1
-   ```
-
-4. 选择 **5：查看 Dedup 状态、任务和计划**；
-5. 如果组件尚未安装，选择 **1：安装内置 Dedup 组件**；按提示重启后再启用数据盘去重。
+2. 右键解压后的 `manage-dedup.ps1`，选择「使用 PowerShell 运行」。如果弹出用户账户控制提示，选择「是」。
+3. 选择 **5：查看 Dedup 状态、任务和计划**；
+4. 如果组件尚未安装，选择 **1：安装内置 Dedup 组件**；按提示重启后再启用数据盘去重。
 
 ## 功能
 
@@ -43,7 +32,7 @@
 
 ## 文件说明
 
-- `manage-dedup.ps1`：可直接查看、修改和运行的 PowerShell 源码；内置的 Dedup 安装组件以 Base64 形式内嵌在脚本中，所以单文件约 24MB。脚本需要管理员权限，请用 `-ExecutionPolicy Bypass` 启动（只作用于该进程），或右键「使用 PowerShell 运行」后按提示操作。
+- `manage-dedup.ps1`：可直接查看、修改和运行的 PowerShell 源码；内置的 Dedup 安装组件以 Base64 形式内嵌在脚本中，所以单文件约 24MB。脚本需要管理员权限，启动后按提示授权。
 - `.gitignore`：忽略运行日志、`.bak-*`、`.cab` 与临时 `dedup.zip`。
 
 ## 自检
